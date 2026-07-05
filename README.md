@@ -86,4 +86,4 @@ MIT — see [LICENSE](LICENSE).
 ## Author
 
 **Nuno Lopes**
-[LinkedIn] ([https://www.linkedin.com/in/your-profile-here](https://www.linkedin.com/in/viriathus/)
+[LinkedIn] (https://www.linkedin.com/in/viriathus/)

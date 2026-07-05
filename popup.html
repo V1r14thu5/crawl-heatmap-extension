@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Crawl Heatmap</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    width: 240px;
+    background: #0f172a;
+    color: #e2e8f0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 12px;
+    padding: 16px;
+  }
+  .header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 14px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #1e293b;
+  }
+  .title { font-size: 13px; font-weight: 700; color: #f8fafc; }
+  .subtitle { font-size: 10px; color: #64748b; margin-top: 1px; }
+
+  .legend { display: flex; flex-direction: column; gap: 7px; margin-bottom: 14px; }
+  .legend-item { display: flex; align-items: flex-start; gap: 8px; }
+  .dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; margin-top: 2px; }
+  .dot-green  { background: #22c55e; border: 1px solid #16a34a; }
+  .dot-amber  { background: #f59e0b; border: 1px solid #d97706; }
+  .dot-red    { background: #ef4444; border: 1px dashed #dc2626; }
+  .dot-blue   { background: #3b82f6; border: 1px solid #2563eb; }
+  .dot-purple { background: #8b5cf6; border: 1px solid #7c3aed; }
+  .legend-text { font-size: 11px; color: #94a3b8; line-height: 1.35; }
+  .legend-note { font-size: 10px; color: #475569; margin-top: 2px; }
+
+  .toggle-btn {
+    width: 100%;
+    padding: 9px;
+    background: #1d4ed8;
+    color: #fff;
+    border: none;
+    border-radius: 7px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 8px;
+    transition: background 0.15s;
+  }
+  .toggle-btn:hover { background: #1e40af; }
+  .toggle-btn.active { background: #dc2626; }
+  .toggle-btn.active:hover { background: #b91c1c; }
+
+  .note { font-size: 10px; color: #475569; text-align: center; line-height: 1.4; }
+
+  .custom-selector { margin-bottom: 12px; }
+  .custom-selector label { display: block; font-size: 10.5px; color: #94a3b8; margin-bottom: 4px; }
+  .custom-selector input {
+    width: 100%;
+    padding: 6px 8px;
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 5px;
+    color: #e2e8f0;
+    font-size: 11px;
+    font-family: monospace;
+    margin-bottom: 4px;
+  }
+  .custom-selector input:focus { outline: none; border-color: #3b82f6; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <span style="font-size:18px">🕷</span>
+  <div>
+    <div class="title">Crawl Heatmap</div>
+    <div class="subtitle">Pass 1 vs Pass 2 visualiser</div>
+  </div>
+</div>
+
+<div class="legend">
+  <div class="legend-item">
+    <span class="dot dot-green"></span>
+    <div>
+      <div class="legend-text">Pass 1 trusted</div>
+      <div class="legend-note">Clean HTML — Google reads on raw pass. Includes related-content bar links (shown as a badge in the panel).</div>
+    </div>
+  </div>
+  <div class="legend-item">
+    <span class="dot dot-amber"></span>
+    <div>
+      <div class="legend-text">Pass 1 present — builder scaffold</div>
+      <div class="legend-note">In raw HTML but wrapped in Elementor/Divi/etc containers. Google sees it but defers trust.</div>
+    </div>
+  </div>
+  <div class="legend-item">
+    <span class="dot dot-red"></span>
+    <div>
+      <div class="legend-text">Pass 2 — render queue</div>
+      <div class="legend-note">Lazy-loaded or JS-dependent. Needs headless Chrome render before Google trusts it.</div>
+    </div>
+  </div>
+  <div class="legend-item">
+    <span class="dot dot-blue"></span>
+    <div>
+      <div class="legend-text">&lt;head&gt; signals</div>
+      <div class="legend-note">Canonical, meta, structured data — always pass 1.</div>
+    </div>
+  </div>
+  <div class="legend-item">
+    <span class="dot dot-purple"></span>
+    <div>
+      <div class="legend-text">CORS issues</div>
+      <div class="legend-note">Cross-domain resources blocked or from wrong origin.</div>
+    </div>
+  </div>
+</div>
+
+<button class="toggle-btn" id="toggleBtn">Activate Heatmap</button>
+
+<div class="custom-selector">
+  <label for="customSelector">Custom "related content" selector (optional)</label>
+  <input type="text" id="customSelector" placeholder=".my-related-widget">
+  <div class="legend-note">Auto-detects common patterns (related-posts, YARPP, Jetpack, also-see, etc). Add a CSS selector here if your site uses a different widget class.</div>
+</div>
+
+<div class="note">
+  Supports Elementor · Divi · Beaver Builder<br>WPBakery · Bricks · plain WordPress
+</div>
+
+<script src="popup.js"></script>
+</body>
+</html>
